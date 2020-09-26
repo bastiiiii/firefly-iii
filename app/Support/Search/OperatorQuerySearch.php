@@ -167,7 +167,7 @@ class OperatorQuerySearch implements SearchInterface
         $this->collector = app(GroupCollectorInterface::class);
         $this->collector->setUser($this->user);
         $this->collector->setLimit($this->limit)->setPage($this->page);
-        $this->collector->withAccountInformation()->withCategoryInformation()->withBudgetInformation();
+        $this->collector->withAccountInformation()->withCategoryInformation()->withBudgetInformation()->withTagInformation();
 
         Log::debug(sprintf('Found %d node(s)', count($this->query->getNodes())));
 

@@ -160,14 +160,14 @@
                                             </select>
                                         {% endif %}
                                     </td>
-                                            <td>
-                                                {% for tag in journal.tags %}
-                                                <span style="display: inline;"><a class="label label-success" href="{{ route('tags.show', [tag.name]) }}">
-                                                        <i class="fa fa-fw fa-tag"></i>
-                                                        {{ tag.name }}</a>
-                                                </span>
-                                                {% endfor %}
-                                            </td>
+                                    <td>
+                                        {% for tag in journal.tags %}
+                                        <span style="display: inline;"><a class="label label-success">
+                                                <i class="fa fa-fw fa-tag"></i>
+                                                {{ tag.name }}</a>
+                                        </span>
+                                        {% endfor %}
+                                    </td>
                                 </tr>
                             {% endfor %}
                         </table>
