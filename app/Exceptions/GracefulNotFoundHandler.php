@@ -51,8 +51,8 @@ class GracefulNotFoundHandler extends ExceptionHandler
      * @param Request   $request
      * @param Exception $exception
      *
-     * @return mixed
      * @throws Exception
+     * @return mixed
      */
     public function render($request, Throwable $exception)
     {
@@ -75,6 +75,7 @@ class GracefulNotFoundHandler extends ExceptionHandler
                 return $this->handleAccount($request, $exception);
             case 'transactions.show':
                 return $this->handleGroup($request, $exception);
+                break;
             case 'attachments.show':
             case 'attachments.edit':
                 // redirect to original attachment holder.
@@ -127,21 +128,19 @@ class GracefulNotFoundHandler extends ExceptionHandler
             case 'transactions.mass.edit':
             case 'transactions.mass.delete':
             case 'transactions.bulk.edit':
-                if ('POST' === $request->method()) {
-                    $request->session()->reflash();
-                    return redirect(route('index'));
-                }
-                return parent::render($request, $exception);
-        }
+                $request->session()->reflash();
 
+                return redirect(route('index'));
+                break;
+        }
     }
 
     /**
      * @param Request   $request
      * @param Throwable $exception
      *
-     * @return Redirector|Response
      * @throws Exception
+     * @return Redirector|Response
      */
     private function handleAccount(Request $request, Throwable $exception)
     {
@@ -168,8 +167,8 @@ class GracefulNotFoundHandler extends ExceptionHandler
      * @param Request   $request
      * @param Throwable $exception
      *
-     * @return RedirectResponse|Redirector|Response
      * @throws Exception
+     * @return RedirectResponse|Redirector|Response
      */
     private function handleAttachment(Request $request, Throwable $exception)
     {
@@ -210,11 +209,11 @@ class GracefulNotFoundHandler extends ExceptionHandler
     }
 
     /**
-     * @param Throwable $request
+     * @param Throwable   $request
      * @param Exception $exception
      *
-     * @return RedirectResponse|\Illuminate\Http\Response|Redirector|Response
      * @throws Exception
+     * @return RedirectResponse|\Illuminate\Http\Response|Redirector|Response
      */
     private function handleGroup(Request $request, Throwable $exception)
     {

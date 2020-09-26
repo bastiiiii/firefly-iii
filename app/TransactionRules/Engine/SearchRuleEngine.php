@@ -232,16 +232,8 @@ class SearchRuleEngine implements RuleEngineInterface
         $searchArray = [];
         /** @var RuleTrigger $ruleTrigger */
         foreach ($rule->ruleTriggers as $ruleTrigger) {
-            // if needs no context, value is different:
-            $needsContext = config(sprintf('firefly.search.operators.%s.needs_context', $ruleTrigger->trigger_type)) ?? true;
-            if(false === $needsContext) {
-                Log::debug(sprintf('SearchRuleEngine:: add a rule trigger: %s:true', $ruleTrigger->trigger_type));
-                $searchArray[$ruleTrigger->trigger_type] = 'true';
-            }
-            if(true === $needsContext) {
-                Log::debug(sprintf('SearchRuleEngine:: add a rule trigger: %s:"%s"', $ruleTrigger->trigger_type, $ruleTrigger->trigger_value));
-                $searchArray[$ruleTrigger->trigger_type] = sprintf('"%s"', $ruleTrigger->trigger_value);
-            }
+            Log::debug(sprintf('SearchRuleEngine:: add a rule trigger: %s:"%s"', $ruleTrigger->trigger_type, $ruleTrigger->trigger_value));
+            $searchArray[$ruleTrigger->trigger_type] = sprintf('"%s"', $ruleTrigger->trigger_value);
         }
 
         // add local operators:
@@ -287,15 +279,8 @@ class SearchRuleEngine implements RuleEngineInterface
                 continue;
             }
             $searchArray = [];
-            $needsContext = config(sprintf('firefly.search.operators.%s.needs_context', $ruleTrigger->trigger_type)) ?? true;
-            if(false === $needsContext) {
-                Log::debug(sprintf('SearchRuleEngine:: non strict, will search for: %s:true', $ruleTrigger->trigger_type));
-                $searchArray[$ruleTrigger->trigger_type] = 'true';
-            }
-            if(true === $needsContext) {
-                Log::debug(sprintf('SearchRuleEngine:: non strict, will search for: %s:"%s"', $ruleTrigger->trigger_type, $ruleTrigger->trigger_value));
-                $searchArray[$ruleTrigger->trigger_type] = sprintf('"%s"', $ruleTrigger->trigger_value);
-            }
+            Log::debug(sprintf('SearchRuleEngine:: non strict, will search for: %s:"%s"', $ruleTrigger->trigger_type, $ruleTrigger->trigger_value));
+            $searchArray[$ruleTrigger->trigger_type] = sprintf('"%s"', $ruleTrigger->trigger_value);
 
             // then, add local operators as well:
             foreach ($this->operators as $operator) {

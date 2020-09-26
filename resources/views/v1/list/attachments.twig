@@ -28,7 +28,7 @@
                     </a>
                     ({{ attachment.size|filesize }})
                     {% if null != attachment.notes  and '' != attachment.notes %}
-                        {{ attachment.notes|default('')|markdown }}
+                        {{ attachment.notes|markdown }}
                     {% endif %}
                 {% endif %}
                 {% if not attachment.file_exists %}

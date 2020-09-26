@@ -28,9 +28,8 @@
                                 <th class="col-lg-1 col-md-1 col-sm-1">{{ trans('list.date') }}</th>
                                 <th class="col-lg-2 col-md-2 col-sm-2">{{ trans('list.from') }}</th>
                                 <th class="col-lg-2 col-md-2 col-sm-2">{{ trans('list.to') }}</th>
-                                <th class="col-lg-1 col-md-1 col-sm-1">{{ trans('list.category') }}</th>
-                                <th class="col-lg-1 col-md-1 col-sm-1">{{ trans('list.budget') }}</th>
-                                <th class="col-lg-2 col-md-2 col-sm-2">{{ trans('list.tags') }}</th>
+                                <th class="col-lg-2 col-md-2 col-sm-2">{{ trans('list.category') }}</th>
+                                <th class="col-lg-2 col-md-2 col-sm-2">{{ trans('list.budget') }}</th>
                             </tr>
                             {% for journal in journals %}
                                 <tr>
@@ -160,14 +159,6 @@
                                             </select>
                                         {% endif %}
                                     </td>
-                                            <td>
-                                                {% for tag in journal.tags %}
-                                                <span style="display: inline;"><a class="label label-success" href="{{ route('tags.show', [tag.name]) }}">
-                                                        <i class="fa fa-fw fa-tag"></i>
-                                                        {{ tag.name }}</a>
-                                                </span>
-                                                {% endfor %}
-                                            </td>
                                 </tr>
                             {% endfor %}
                         </table>

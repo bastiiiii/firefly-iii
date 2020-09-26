@@ -378,7 +378,7 @@ class TagRepository implements TagRepositoryInterface
             $sums[$currencyId][$type] = bcadd($sums[$currencyId][$type], $amount);
 
             $foreignCurrencyId = $journal['foreign_currency_id'];
-            if (null !== $foreignCurrencyId && 0 !== $foreignCurrencyId) {
+            if (null !== $foreignCurrencyId) {
                 $sums[$foreignCurrencyId] = $sums[$foreignCurrencyId] ?? [
                         'currency_id'                    => $foreignCurrencyId,
                         'currency_name'                  => $journal['foreign_currency_name'],

@@ -121,8 +121,8 @@ class GroupCollector implements GroupCollectorInterface
             'foreign_currency.decimal_places as foreign_currency_decimal_places',
 
             # destination account info (always present)
-            'destination.account_id as destination_account_id',
-        ];
+	    'destination.account_id as destination_account_id',
+    ];
     }
 
     /**
