@@ -1,5 +1,8 @@
+[![Packagist][packagist-shield]][packagist-uri]
+[![License][license-shield]][license-uri]
+[![Stargazers][stars-shield]][stars-url]
+[![Donate][donate-shield]][donate-uri]
 
-<<<<<<< HEAD
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
@@ -134,7 +137,7 @@ OK that was a joke. You can donate using [PayPal](https://www.paypal.com/cgi-bin
 
 I'm also very proud to be a part of the **[GitHub Sponsors Program](https://github.com/sponsors/JC5)**.
 
-Thank you for considering donating to Firefly III! If you wish to make a one-time donation just cancel your patronage after the first withdrawal.
+Thank you for considering donating to Firefly III!
 
 ## License
 
@@ -146,7 +149,7 @@ You can contact me at [james@firefly-iii.org](mailto:james@firefly-iii.org), you
 
 ## Acknowledgements
 
-Over time, [many people have contributed to Firefly III](https://github.com/firefly-iii/firefly-iii/graphs/contributors). I'm grateful for their your support and code contributions.
+Over time, [many people have contributed to Firefly III](https://github.com/firefly-iii/firefly-iii/graphs/contributors).
 
 [packagist-shield]: https://img.shields.io/packagist/v/grumpydictator/firefly-iii.svg?style=flat-square
 [packagist-uri]: https://packagist.org/packages/grumpydictator/firefly-iii
@@ -156,5 +159,3 @@ Over time, [many people have contributed to Firefly III](https://github.com/fire
 [stars-url]: https://github.com/firefly-iii/firefly-iii/stargazers
 [donate-shield]: https://img.shields.io/badge/donate-%24%20%E2%82%AC-brightgreen?style=flat-square
 [donate-uri]: #support-the-development-of-firefly-iii
-=======
->>>>>>> 65f7d73707bd53d6f745bf7000a1568f560b2e70

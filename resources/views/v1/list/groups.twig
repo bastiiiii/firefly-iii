@@ -46,6 +46,7 @@ TODO: hide and show columns
         {% if showBudget %}
             <th class="hidden-xs">{{ trans('list.budget') }}</th>
         {% endif %}
+        <th class="hidden-xs">{{ trans('list.tags') }}</th>
         <th class="hidden-xs">&nbsp;</th><!-- actions -->
         <th class="hidden-xs">&nbsp;</th><!-- checkbox -->
     </tr>
@@ -218,7 +219,15 @@ TODO: hide and show columns
                         {% endif %}
                     </td>
                 {% endif %}
-
+                                            <td>
+						    {{ transactions.tags|length }}
+                                                {% for tag in transaction.tags %}
+                                                <span style="display: inline;"><a class="label label-success" href="{{ route('tags.show', [tag.name]) }}">
+                                                        <i class="fa fa-fw fa-tag"></i>
+                                                        {{ tag.name }}</a>
+                                                </span>
+                                                {% endfor %}
+                                            </td>
                 {% if group.count == 1 %}
                     <td style=" {{ style|raw }};" class="hidden-xs">
                         <div class="btn-group btn-group-xs pull-right">
