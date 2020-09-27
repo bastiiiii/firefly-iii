@@ -1,8 +1,5 @@
-[![Packagist][packagist-shield]][packagist-uri]
-[![License][license-shield]][license-uri]
-[![Stargazers][stars-shield]][stars-url]
-[![Donate][donate-shield]][donate-uri]
 
+<<<<<<< HEAD
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
@@ -159,3 +156,5 @@ Over time, [many people have contributed to Firefly III](https://github.com/fire
 [stars-url]: https://github.com/firefly-iii/firefly-iii/stargazers
 [donate-shield]: https://img.shields.io/badge/donate-%24%20%E2%82%AC-brightgreen?style=flat-square
 [donate-uri]: #support-the-development-of-firefly-iii
+=======
+>>>>>>> 65f7d73707bd53d6f745bf7000a1568f560b2e70
