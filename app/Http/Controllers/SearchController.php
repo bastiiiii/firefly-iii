@@ -43,6 +43,7 @@ class SearchController extends Controller
     {
         parent::__construct();
         app('view')->share('showCategory', true);
+        app('view')->share('showTags', true);
         $this->middleware(
             static function ($request, $next) {
                 app('view')->share('mainTitleIcon', 'fa-search');
