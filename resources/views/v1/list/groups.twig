@@ -7,8 +7,18 @@ TODO: hide and show columns
     <tr>
         {% if showCategory or showBudget %}
             <td colspan="7" class="no-margin-pagination">{{ groups.render|raw }}</td>
+            {% if showTags %}
+                <td colspan="8" class="no-margin-pagination">{{ groups.render|raw }}</td>
+            {% else %}
+                <td colspan="7" class="no-margin-pagination">{{ groups.render|raw }}</td>
+            {% endif %}
         {% else %}
             <td colspan="6" class="no-margin-pagination">{{ groups.render|raw }}</td>
+            {% if showTags %}
+                <td colspan="7" class="no-margin-pagination">{{ groups.render|raw }}</td>
+            {% else %}
+                <td colspan="6" class="no-margin-pagination">{{ groups.render|raw }}</td>
+            {% endif %}
         {% endif %}
         <td colspan="1" class="hidden-xs">
             <!-- Single button -->
@@ -46,7 +56,9 @@ TODO: hide and show columns
         {% if showBudget %}
             <th class="hidden-xs">{{ trans('list.budget') }}</th>
         {% endif %}
-        <th class="hidden-xs">{{ trans('list.tags') }}</th>
+        {% if showTags %}
+            <th class="hidden-xs">{{ trans('list.tags') }}</th>
+        {% endif %}
         <th class="hidden-xs">&nbsp;</th><!-- actions -->
         <th class="hidden-xs">&nbsp;</th><!-- checkbox -->
     </tr>
@@ -76,9 +88,17 @@ TODO: hide and show columns
                 </td>
                 <!-- column to span accounts + extra fields -->
                 {% if showCategory or showBudget %}
-                    <td style="border-top:1px #aaa solid;" colspan="3">&nbsp;</td>
+                    {% if showTags %}
+                        <td style="border-top:1px #aaa solid;" colspan="4">&nbsp;</td>
+                    {% else %}
+                        <td style="border-top:1px #aaa solid;" colspan="3">&nbsp;</td>
+                    {% endif %}
                 {% else %}
-                    <td style="border-top:1px #aaa solid;" colspan="2">&nbsp;</td>
+                    {% if showTags %}
+                        <td style="border-top:1px #aaa solid;" colspan="3">&nbsp;</td>
+                    {% else %}
+                        <td style="border-top:1px #aaa solid;" colspan="2">&nbsp;</td>
+                    {% endif %}
                 {% endif %}
                 <td style="border-top:1px #aaa solid;" class="hidden-xs">
                     <div class="btn-group btn-group-xs pull-right">
@@ -219,15 +239,16 @@ TODO: hide and show columns
                         {% endif %}
                     </td>
                 {% endif %}
-                                            <td>
-						    {{ transactions.tags|length }}
-                                                {% for tag in transaction.tags %}
-                                                <span style="display: inline;"><a class="label label-success" href="{{ route('tags.show', [tag.name]) }}">
-                                                        <i class="fa fa-fw fa-tag"></i>
-                                                        {{ tag.name }}</a>
-                                                </span>
-                                                {% endfor %}
-                                            </td>
+                {% if showTags %}
+                    <td>
+                        {% for tag in transaction.tags %}
+                        <span style="display: inline;"><a class="label label-success">
+                                <i class="fa fa-fw fa-tag"></i>
+                                {{ tag.name }}</a>
+                        </span>
+                        {% endfor %}
+                    </td>
+                {% endif %}
                 {% if group.count == 1 %}
                     <td style=" {{ style|raw }};" class="hidden-xs">
                         <div class="btn-group btn-group-xs pull-right">
@@ -292,9 +313,17 @@ TODO: hide and show columns
     </tr>
     <tr>
         {% if showCategory or showBudget %}
-            <td colspan="9" class="no-margin-pagination">{{ groups.render|raw }}</td>
+            {% if showTags %}
+                <td colspan="10" class="no-margin-pagination">{{ groups.render|raw }}</td>
+            {% else %}
+                <td colspan="9" class="no-margin-pagination">{{ groups.render|raw }}</td>
+            {% endif %}
         {% else %}
-            <td colspan="8" class="no-margin-pagination">{{ groups.render|raw }}</td>
+            {% if showTags %}
+                <td colspan="9" class="no-margin-pagination">{{ groups.render|raw }}</td>
+            {% else %}
+                <td colspan="8" class="no-margin-pagination">{{ groups.render|raw }}</td>
+            {% endif %}
         {% endif %}
     </tr>
     </tfoot>
