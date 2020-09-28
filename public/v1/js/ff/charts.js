@@ -87,9 +87,10 @@ function lineChart(URI, container) {
 
     var colorData = true;
     var options = $.extend(true, {}, defaultChartOptions);
+    var options2 = $.extend(options, { legend: { display:true, },});
     var chartType = 'line';
 
-    drawAChart(URI, container, chartType, options, colorData);
+    drawAChart(URI, container, chartType, options2, colorData);
 }
 
 /**
