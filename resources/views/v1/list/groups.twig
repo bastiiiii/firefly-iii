@@ -6,18 +6,18 @@ TODO: hide and show columns
     <thead>
     <tr>
         {% if showCategory or showBudget %}
-            <td colspan="7" class="no-margin-pagination">{{ groups.render|raw }}</td>
+            <td colspan="7" class="no-margin-pagination">{{ groups.render()|raw }}</td>
             {% if showTags %}
-                <td colspan="8" class="no-margin-pagination">{{ groups.render|raw }}</td>
+                <td colspan="8" class="no-margin-pagination">{{ groups.render()|raw }}</td>
             {% else %}
-                <td colspan="7" class="no-margin-pagination">{{ groups.render|raw }}</td>
+                <td colspan="7" class="no-margin-pagination">{{ groups.render()|raw }}</td>
             {% endif %}
         {% else %}
-            <td colspan="6" class="no-margin-pagination">{{ groups.render|raw }}</td>
+            <td colspan="6" class="no-margin-pagination">{{ groups.render()|raw }}</td>
             {% if showTags %}
-                <td colspan="7" class="no-margin-pagination">{{ groups.render|raw }}</td>
+                <td colspan="7" class="no-margin-pagination">{{ groups.render()|raw }}</td>
             {% else %}
-                <td colspan="6" class="no-margin-pagination">{{ groups.render|raw }}</td>
+                <td colspan="6" class="no-margin-pagination">{{ groups.render()|raw }}</td>
             {% endif %}
         {% endif %}
         <td colspan="1" class="hidden-xs">
@@ -314,15 +314,15 @@ TODO: hide and show columns
     <tr>
         {% if showCategory or showBudget %}
             {% if showTags %}
-                <td colspan="10" class="no-margin-pagination">{{ groups.render|raw }}</td>
+                <td colspan="10" class="no-margin-pagination">{{ groups.render()|raw }}</td>
             {% else %}
-                <td colspan="9" class="no-margin-pagination">{{ groups.render|raw }}</td>
+                <td colspan="9" class="no-margin-pagination">{{ groups.render()|raw }}</td>
             {% endif %}
         {% else %}
             {% if showTags %}
-                <td colspan="9" class="no-margin-pagination">{{ groups.render|raw }}</td>
+                <td colspan="9" class="no-margin-pagination">{{ groups.render()|raw }}</td>
             {% else %}
-                <td colspan="8" class="no-margin-pagination">{{ groups.render|raw }}</td>
+                <td colspan="8" class="no-margin-pagination">{{ groups.render()|raw }}</td>
             {% endif %}
         {% endif %}
     </tr>
