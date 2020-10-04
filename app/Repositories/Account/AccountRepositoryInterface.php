@@ -161,6 +161,14 @@ interface AccountRepositoryInterface
 
     /**
      * @param array $types
+     * @param String $role
+     *
+     * @return Collection
+     */
+    public function getAccountsByRole(array $types, String $role): Collection;
+
+    /**
+     * @param array $types
      *
      * @return Collection
      */

@@ -330,6 +330,7 @@ Route::group(
     ['middleware' => 'user-full-auth', 'namespace' => 'FireflyIII\Http\Controllers\Chart', 'prefix' => 'chart/account', 'as' => 'chart.account.'],
     static function () {
         Route::get('frontpage', ['uses' => 'AccountController@frontpage', 'as' => 'frontpage']);
+        Route::get('savings', ['uses' => 'AccountController@savingsAccounts', 'as' => 'savings']);
         Route::get('expense', ['uses' => 'AccountController@expenseAccounts', 'as' => 'expense']);
         Route::get('revenue', ['uses' => 'AccountController@revenueAccounts', 'as' => 'revenue']);
         Route::get('report/{accountList}/{start_date}/{end_date}', ['uses' => 'AccountController@report', 'as' => 'report']);

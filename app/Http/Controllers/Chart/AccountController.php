@@ -326,6 +326,80 @@ class AccountController extends Controller
      *
      * @return JsonResponse
      */
+    public function savingsAccounts2(AccountRepositoryInterface $repository): JsonResponse
+    {
+        $start      = clone session('start', Carbon::now()->startOfMonth());
+        $end        = clone session('end', Carbon::now()->endOfMonth());
+
+        //$accounts     = $this->accountRepository->getAccountsByType([AccountType::ASSET]);
+        $accounts     = $this->accountRepository->getAccountsByType([AccountType::REVENUE]);
+        
+        // chart properties for cache:
+        $cache = new CacheProperties();
+        $cache->addProperty($start);
+        $cache->addProperty($end);
+        $cache->addProperty('chart.account.savings-accounts');
+        $cache->addProperty($accounts);
+        if ($cache->has()) {
+            return $cache->get(); // @codeCoverageIgnore
+        }
+        
+        $locale = app('steam')->getLocale();
+
+        $currency   = app('amount')->getDefaultCurrency();
+        $chartData = [];
+        /** @var Account $account */
+        foreach ($accounts as $account) {
+            $currentSet = [
+                'label'           => $account->name,
+                'currency_symbol' => $currency->symbol,
+                'entries'         => [],
+            ];
+
+            $currentStart = clone $start;
+            $range        = app('steam')->balanceInRange($account, $start, clone $end);
+            $previous     = array_values($range)[0];
+            while ($currentStart <= $end) {
+                $format   = $currentStart->format('Y-m-d');
+                $label    = trim($currentStart->formatLocalized((string)trans('config.month_and_day', [], $locale)));
+                $balance  = $range[$format] ?? $previous;
+                $previous = $balance;
+                $currentStart->addDay();
+                $currentSet['entries'][$label] = $balance;
+            }
+            $chartData[] = $currentSet;
+        }
+        $data = $generator->multiSet($chartData);
+        $cache->store($data);
+
+        return response()->json($data);
+    }
+
+    public function savingsAccounts(AccountRepositoryInterface $repository): JsonResponse
+    {
+        $start      = clone session('start', Carbon::now()->startOfMonth());
+        $end        = clone session('end', Carbon::now()->endOfMonth());
+        $defaultSet = $repository->getAccountsByRole([AccountType::DEFAULT, AccountType::ASSET], '"ccAsset"')->pluck('id')->toArray();
+        Log::debug('Default set is ', $defaultSet);
+        $savingsFrontPage = app('preferences')->get('savingsFrontPageAccounts', $defaultSet);
+
+
+        Log::debug('Frontpage preference set is ', $savingsFrontPage->data);
+        if (0 === count($savingsFrontPage->data)) {
+            app('preferences')->set('savingsFrontPageAccounts', $defaultSet);
+            Log::debug('frontpage set is empty!');
+        }
+        $accounts = $repository->getAccountsById($savingsFrontPage->data);
+
+        return response()->json($this->accountBalanceChart($accounts, $start, $end));
+    }
+    /**
+     * Shows the balances for all the user's frontpage accounts.
+     *
+     * @param AccountRepositoryInterface $repository
+     *
+     * @return JsonResponse
+     */
     public function frontpage(AccountRepositoryInterface $repository): JsonResponse
     {
         $start      = clone session('start', Carbon::now()->startOfMonth());

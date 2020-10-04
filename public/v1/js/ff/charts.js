@@ -87,10 +87,9 @@ function lineChart(URI, container) {
 
     var colorData = true;
     var options = $.extend(true, {}, defaultChartOptions);
-    var options2 = $.extend(options, { legend: { display:true, },});
     var chartType = 'line';
 
-    drawAChart(URI, container, chartType, options2, colorData);
+    drawAChart(URI, container, chartType, options, colorData);
 }
 
 /**
@@ -390,6 +389,33 @@ function drawAChart(URI, container, chartType, options, colorData) {
             data = colorizeData(data);
         }
 
+        // manipulate specific charttypes (e.g. add legend)
+        switch(chartType) {
+            case 'line':
+                if (data.datasets.length > 1) {
+                    var options2 = $.extend(options, { legend: { display:true, },});
+                    options = options2;
+                }
+            break;
+            case 'bar':
+                if (data.datasets.length > 0) {
+                    var options2 = $.extend(options, { legend: { display:true, },});
+                    options = options2;
+                }
+            break;
+            case 'pie':
+                if (data.labels.length > 1 && data.labels.length < 5) {
+                    var options2 = $.extend(options, { legend: { display:true, position: 'right' },});
+                    options = options2;
+                }
+            default:
+
+        }
+        if (data.datasets.length > 1) {
+            var options2 = $.extend(options, { legend: { display:true, },});
+            options = options2;
+        }
+        
         if (allCharts.hasOwnProperty(container)) {
             allCharts[container].data.datasets = data.datasets;
             allCharts[container].data.labels = data.labels;
