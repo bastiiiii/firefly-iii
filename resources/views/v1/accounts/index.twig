@@ -26,7 +26,9 @@
 
 
                     </div>
-
+                    <div class="box-body">
+                        <canvas id="accounts-chart" style="width:100%;height:400px;" height="400" width="100%"></canvas>
+                    </div>
                     <div class="box-body no-padding">
                         <div style="padding:8px;">
                             <a href="{{ route('accounts.create', objectType) }}" class="btn btn-success"><i class="fa fa-plus fa-fw"></i> {{ ('make_new_' ~ objectType ~ '_account')|_ }}</a>
@@ -77,7 +79,15 @@
 {% block scripts %}
     <script type="text/javascript" nonce="{{ JS_NONCE }}">
         var objectType = '{{ objectType|escape }}';
+        
+        var accountFrontpageUri = '{{ route('chart.account.frontpage') }}';
     </script>
     <script src="v1/js/lib/jquery-ui.min.js?v={{ FF_VERSION }}" type="text/javascript" nonce="{{ JS_NONCE }}"></script>
     <script type="text/javascript" nonce="{{ JS_NONCE }}" src="v1/js/ff/accounts/index.js?v={{ FF_VERSION }}"></script>
+    
+    <script type="text/javascript" src="v1/js/lib/Chart.bundle.min.js?v={{ FF_VERSION }}" nonce="{{ JS_NONCE }}"></script>
+    <script type="text/javascript" src="v1/js/lib/chartjs-plugin-annotation.min.js?v={{ FF_VERSION }}" nonce="{{ JS_NONCE }}"></script>
+    <script type="text/javascript" src="v1/js/ff/charts.defaults.js?v={{ FF_VERSION }}" nonce="{{ JS_NONCE }}"></script>
+    <script type="text/javascript" src="v1/js/ff/charts.js?v={{ FF_VERSION }}" nonce="{{ JS_NONCE }}"></script>
+    <script type="text/javascript" src="v1/js/ff/index.js?v={{ FF_VERSION }}" nonce="{{ JS_NONCE }}"></script>
 {% endblock %}

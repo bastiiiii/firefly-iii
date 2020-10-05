@@ -302,35 +302,11 @@ class AccountRepository implements AccountRepositoryInterface
         $query = $this->user->accounts()->leftJoin('account_meta', 'accounts.id', '=', 'account_meta.account_id')
         ->where('account_meta.name', 'account_role')
         ->where('account_meta.data', '"'.$role.'"');
-
+        
         if (count($types) > 0) {
             $query->accountTypeIn($types);
         }
-        /**
-        * 'account_role'          => ['defaultAsset', 'cashWalletAsset', 'savingAsset', 'sharedAsset', 'ccAsset', 'cashWalletAsset']
-
-        * MariaDB [firefly]> 
-        * select accounts.name from accounts 
-        * left join account_meta on accounts.id = account_meta.account_id 
-        * where account_meta.data = '"savingAsset"';
-        * +--------------------------------------------+
-        * | name                                       |
-        * +--------------------------------------------+
-        * | Sparkasse-Sparkonto                        |
-        * | ING-DiBa Extra-Konto                       |
-        * | VR-Bank Lichtenfels-Ebern eG - Sparkonto   |
-        * | PSD Bank Nürnberg eG - PSD Tagesgeld       |
-        * | comdirect Verrechnungskonto                |
-        * | PSD Bank Nürnberg eG - PSD Mitgliedschaft  |
-        * +--------------------------------------------+
-        * 6 rows in set (0.026 sec)
-        */ 
-
-        //$query->leftJoin('account_meta', 'account_meta.account_id', '=', 'accounts.id');
-        //$query->where('account_meta.name', 'account_role');
-        //$query->where('account_meta.data', json_encode($role));
-            //->where('account_meta.data', json_encode($role));
-
+        $query->where('active', 1);
         $query->orderBy('accounts.order', 'ASC');
         $query->orderBy('accounts.active', 'DESC');
         $query->orderBy('accounts.name', 'ASC');
@@ -349,6 +325,7 @@ class AccountRepository implements AccountRepositoryInterface
         $query = $this->user->accounts()->with(
             ['accountmeta' => function (HasMany $query) {
                 $query->where('name', 'account_role');
+
             }, 'attachments']
         );
         if (count($types) > 0) {

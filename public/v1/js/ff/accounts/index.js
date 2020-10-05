@@ -31,6 +31,9 @@ var fixObjectHelper = function (e, tr) {
 
 $(function () {
     "use strict";
+
+    lineChart(accountFrontpageUri, 'accounts-chart');
+    
     // table may have multiple tbody's.
     $('#sortable-table').find('tbody').sortable(
         {

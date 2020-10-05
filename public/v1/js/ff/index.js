@@ -31,11 +31,9 @@ function drawChart() {
     "use strict";
     lineChart(accountFrontpageUri, 'accounts-chart');
 
-    console.log("hier gehts los");
-    //lineChart(accountSavingsUri, 'savings-accounts-chart');
-    lineChart(accountFrontpageUri, 'savings-accounts-chart');
-    //lineChart('chart/account/savings', 'savings-accounts-chart');
-    console.log("hier ist ende");
+    lineChart(accountDefaultsUri, 'defaults-accounts-chart');
+    lineChart(accountSavingsUri, 'savings-accounts-chart');
+    lineChart(accountCreditcardsUri, 'creditcards-accounts-chart');
 
     if (billCount > 0) {
         multiCurrencyPieChart('chart/bill/frontpage', 'bills-chart');
