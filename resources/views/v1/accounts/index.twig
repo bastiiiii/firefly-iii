@@ -26,9 +26,11 @@
 
 
                     </div>
-                    <div class="box-body">
-                        <canvas id="accounts-chart" style="width:100%;height:400px;" height="400" width="100%"></canvas>
-                    </div>
+                    {% if objectType == 'asset' %}
+                        <div class="box-body">
+                            <canvas id="accounts-chart" style="width:100%;height:400px;" height="400" width="100%"></canvas>
+                        </div>
+                    {% endif %}
                     <div class="box-body no-padding">
                         <div style="padding:8px;">
                             <a href="{{ route('accounts.create', objectType) }}" class="btn btn-success"><i class="fa fa-plus fa-fw"></i> {{ ('make_new_' ~ objectType ~ '_account')|_ }}</a>
