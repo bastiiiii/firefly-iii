@@ -639,9 +639,7 @@ class AccountRepository implements AccountRepositoryInterface
     {
         /** @var AccountUpdateService $service */
         $service = app(AccountUpdateService::class);
-        $account = $service->update($account, $data);
-
-        return $account;
+        return $service->update($account, $data);
     }
 
     /**
@@ -686,7 +684,7 @@ class AccountRepository implements AccountRepositoryInterface
         /** @var Storage $disk */
         $disk = Storage::disk('upload');
 
-        $set = $set->each(
+        return $set->each(
             static function (Attachment $attachment) use ($disk) {
                 $notes                   = $attachment->notes()->first();
                 $attachment->file_exists = $disk->exists($attachment->fileName());
@@ -695,8 +693,6 @@ class AccountRepository implements AccountRepositoryInterface
                 return $attachment;
             }
         );
-
-        return $set;
     }
 
     /**
