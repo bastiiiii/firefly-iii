@@ -328,15 +328,6 @@ class AccountController extends Controller
     {
         $start      = clone session('start', Carbon::now()->startOfMonth());
         $end        = clone session('end', Carbon::now()->endOfMonth());
-
-/*
-*        "Default asset account": "Standard-Bestandskonto",
-        "account_role_defaultAsset": "Standard-Bestandskonto",
-        "account_role_savingAsset": "Sparkonto",
-        "account_role_sharedAsset": "Gemeinsames Bestandskonto",
-        "account_role_ccAsset": "Kreditkarte",
-        "account_role_cashWalletAsset": "Geldb\u00f6rse"
-*/
         $accounts     = $this->accountRepository->getAccountsByRole([AccountType::DEFAULT, AccountType::ASSET], 'defaultAsset');
         
         // chart properties for cache:
@@ -361,15 +352,6 @@ class AccountController extends Controller
     {
         $start      = clone session('start', Carbon::now()->startOfMonth());
         $end        = clone session('end', Carbon::now()->endOfMonth());
-
-/*
-*        "Default asset account": "Standard-Bestandskonto",
-        "account_role_defaultAsset": "Standard-Bestandskonto",
-        "account_role_savingAsset": "Sparkonto",
-        "account_role_sharedAsset": "Gemeinsames Bestandskonto",
-        "account_role_ccAsset": "Kreditkarte",
-        "account_role_cashWalletAsset": "Geldb\u00f6rse"
-*/
         $accounts     = $this->accountRepository->getAccountsByRole([AccountType::DEFAULT, AccountType::ASSET], 'savingAsset');
         
         // chart properties for cache:
