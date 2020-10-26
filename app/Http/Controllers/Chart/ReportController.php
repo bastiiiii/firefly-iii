@@ -28,6 +28,7 @@ use FireflyIII\Helpers\Collector\GroupCollectorInterface;
 use FireflyIII\Helpers\Report\NetWorthInterface;
 use FireflyIII\Http\Controllers\Controller;
 use FireflyIII\Models\Account;
+use FireflyIII\Models\AccountType;
 use FireflyIII\Models\TransactionType;
 use FireflyIII\Repositories\Account\AccountRepositoryInterface;
 use FireflyIII\Support\CacheProperties;
@@ -56,6 +57,22 @@ class ReportController extends Controller
         parent::__construct();
         // create chart generator:
         $this->generator = app(GeneratorInterface::class);
+    }
+
+    /**
+     * This chart, by default, is shown on the multi-year and year report pages,
+     * which means that giving it a 2 week "period" should be enough granularity.
+     *
+     * @return JsonResponse
+     */
+    public function netWorthUserAccounts(): JsonResponse
+    {
+        $start      = clone session('start', Carbon::now()->startOfMonth());
+        $end        = clone session('end', Carbon::now()->endOfMonth());
+        $accountRepository = app(AccountRepositoryInterface::class);
+        $accounts = $accountRepository->getAccountsByType([AccountType::DEFAULT, AccountType::ASSET]);
+
+        return $this->netWorth($accounts, $start, $end);
     }
 
     /**
@@ -131,6 +148,22 @@ class ReportController extends Controller
         $cache->store($data);
 
         return response()->json($data);
+    }
+
+    /**
+     * Shows income and expense, debit/credit of all user accounts: operations.
+     *
+     * @return JsonResponse
+     */
+    public function operationsUserAccounts(): JsonResponse
+    {
+        $start      = clone session('start', Carbon::now()->startOfMonth());
+        $end        = clone session('end', Carbon::now()->endOfMonth());
+
+        $accountRepository = app(AccountRepositoryInterface::class);
+        $accounts = $accountRepository->getAccountsByType([AccountType::DEFAULT, AccountType::ASSET]);
+
+        return $this->operations($accounts, $start, $end);
     }
 
     /**

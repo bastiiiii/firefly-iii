@@ -512,6 +512,8 @@ Route::group(
     static function () {
         Route::get('operations/{accountList}/{start_date}/{end_date}', ['uses' => 'ReportController@operations', 'as' => 'operations']);
         Route::get('net-worth/{accountList}/{start_date}/{end_date}/', ['uses' => 'ReportController@netWorth', 'as' => 'net-worth']);
+        Route::get('operationsUserAccounts', ['uses' => 'ReportController@operationsUserAccounts', 'as' => 'operationsUserAccounts']);
+        Route::get('netWorthUserAccounts', ['uses' => 'ReportController@netWorthUserAccounts', 'as' => 'netWorthUserAccounts']);
     }
 );
 

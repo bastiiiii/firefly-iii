@@ -31,6 +31,9 @@ function drawChart() {
     "use strict";
     lineChart(accountFrontpageUri, 'accounts-chart');
 
+    lineChart(reportNetworthUri, 'networth-report-chart');
+    columnChart(reportOperationsUri, 'operations-report-chart');
+
     lineChart(accountDefaultsUri, 'defaults-accounts-chart');
     lineChart(accountSavingsUri, 'savings-accounts-chart');
     lineChart(accountCreditcardsUri, 'creditcards-accounts-chart');
