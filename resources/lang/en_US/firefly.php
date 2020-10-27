@@ -36,6 +36,7 @@ return [
     'welcome_back'                                        => 'What\'s playing?',
     'everything'                                          => 'Everything',
     'today'                                               => 'today',
+    'this_year'                                           => 'acutal year',
     'customRange'                                         => 'Custom range',
     'apply'                                               => 'Apply',
     'select_date'                                         => 'Select date..',

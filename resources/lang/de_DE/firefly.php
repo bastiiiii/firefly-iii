@@ -36,6 +36,7 @@ return [
     'welcome_back'                                        => 'Überblick',
     'everything'                                          => 'Alle',
     'today'                                               => 'Heute',
+    'this_year'                                           => 'Aktuelles Jahr',
     'customRange'                                         => 'Individueller Bereich',
     'apply'                                               => 'Übernehmen',
     'select_date'                                         => 'Wähle ein Datum..',

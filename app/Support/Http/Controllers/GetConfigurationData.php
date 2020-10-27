@@ -133,6 +133,9 @@ trait GetConfigurationData
         if ($todayStart->ne($start) || $todayEnd->ne($end)) {
             $ranges[ucfirst((string)trans('firefly.today'))] = [$todayStart, $todayEnd];
         }
+        // this year:
+        $index          = (string)trans('firefly.this_year');
+        $ranges[$index] = [Carbon::now()->startOfYear(), Carbon::now()->endOfYear()];
 
         // last seven days:
         $seven          = Carbon::now()->subDays(7);
