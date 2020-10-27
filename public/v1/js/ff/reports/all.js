@@ -139,7 +139,10 @@ function clickCategoryChart(e) {
 
     var URL = 'chart/category/report-period/' + categoryId + '/' + accountIds + '/' + startDate + '/' + endDate;
     var container = 'category_chart';
-    columnChart(URL, container);
+    columnChartCustom(URL, container, [
+        [219, 68, 55], // red #DB4437
+        [0, 141, 76] // green
+    ]);
     return false;
 }
 
@@ -152,6 +155,9 @@ function clickBudgetChart(e) {
 
     var URL = 'chart/budget/period/' + budgetId + '/' + currencyId + '/' + accountIds + '/' + startDate + '/' + endDate;
     var container = 'budget_chart';
-    columnChart(URL, container);
+    columnChartCustom(URL, container, [
+        [219, 68, 55], // red #DB4437
+        [0, 141, 76] // green
+    ]);
     return false;
 }
