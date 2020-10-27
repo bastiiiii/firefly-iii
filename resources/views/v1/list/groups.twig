@@ -1,21 +1,17 @@
 <table class="table table-condensed table-hover table-responsive table-sortable">
     <thead>
     <tr>
-        {% if showCategory or showBudget %}
-            <td colspan="7" class="no-margin-pagination">{{ groups.render()|raw }}</td>
-            {% if showTags %}
-                <td colspan="8" class="no-margin-pagination">{{ groups.render()|raw }}</td>
-            {% else %}
-                <td colspan="7" class="no-margin-pagination">{{ groups.render()|raw }}</td>
-            {% endif %}
-        {% else %}
-            <td colspan="6" class="no-margin-pagination">{{ groups.render()|raw }}</td>
-            {% if showTags %}
-                <td colspan="7" class="no-margin-pagination">{{ groups.render()|raw }}</td>
-            {% else %}
-                <td colspan="6" class="no-margin-pagination">{{ groups.render()|raw }}</td>
-            {% endif %}
+        {% set colspancount = 6 %}
+        {% if showCategory %}
+            {% set colspancount = colspancount + 1 %}
         {% endif %}
+        {% if showBudget %}
+            {% set colspancount = colspancount + 1 %}
+        {% endif %}
+        {% if showTags %}
+            {% set colspancount = colspancount + 1 %}
+        {% endif %}
+        <td colspan="{{ colspancount }}" class="no-margin-pagination">{{ groups.render()|raw }}</td>
         <td colspan="1" class="hidden-xs">
             <!-- Single button -->
             <div class="btn-group btn-group-xs action-menu pull-right" style="display: none;">
@@ -83,19 +79,7 @@
                     {% endfor %}
                 </td>
                 <!-- column to span accounts + extra fields -->
-                {% if showCategory or showBudget %}
-                    {% if showTags %}
-                        <td style="border-top:1px #aaa solid;" colspan="4">&nbsp;</td>
-                    {% else %}
-                        <td style="border-top:1px #aaa solid;" colspan="3">&nbsp;</td>
-                    {% endif %}
-                {% else %}
-                    {% if showTags %}
-                        <td style="border-top:1px #aaa solid;" colspan="3">&nbsp;</td>
-                    {% else %}
-                        <td style="border-top:1px #aaa solid;" colspan="2">&nbsp;</td>
-                    {% endif %}
-                {% endif %}
+                <td style="border-top:1px #aaa solid;" colspan="{{ colspancount - 4 }}">&nbsp;</td>
                 <td style="border-top:1px #aaa solid;" class="hidden-xs">
                     <div class="btn-group btn-group-xs pull-right">
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
@@ -287,7 +271,7 @@
     </tbody>
     <tfoot>
     <tr>
-        <td colspan="8">
+        <td colspan="{{ colspancount + 1 }}">
             <div class="pull-right">
                 <!-- Single button -->
                 <div class="btn-group action-menu btn-group-xs pull-right" style="display:none;">
@@ -304,6 +288,11 @@
                                 <span>{{ 'mass_delete'|_ }}</span></a></li>
                     </ul>
                 </div>
+            </div>
+        </td>
+        <td colspan="1" class="hidden-xs">
+            <div class="pull-right">
+                <input id="list_ALL" value="1" name="select-all" type="checkbox" class="select-all form-check-inline"/>
             </div>
         </td>
     </tr>
