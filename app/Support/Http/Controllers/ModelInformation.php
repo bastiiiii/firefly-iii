@@ -369,9 +369,11 @@ trait ModelInformation
         $tags = $journal->tags()->get();
         /** @var Tag $tag */
         foreach ($tags as $tag) {
-            $journalTriggers[$index] = 'add_tag';
-            $values[$index]          = $tag->tag;
-            $index++;
+            if (!preg_match("/CSV Import/i", $tag->tag)) {
+                $journalTriggers[$index] = 'add_tag';
+                $values[$index]          = $tag->tag;
+                $index++;
+            }
         }
         // notes (if)
         $notes = $journal->notes()->first();
