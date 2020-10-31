@@ -199,7 +199,7 @@ class CreateController extends Controller
 
         // get triggers and actions for journal.
         $oldTriggers = $this->getTriggersForJournal($journal);
-        $oldActions  = [];
+        $oldActions  = $this->createActionsFromJournal($journal);
 
         $this->createDefaultRuleGroup();
         $this->createDefaultRule();

@@ -202,17 +202,18 @@ trait ModelInformation
         $index++;
 
         // currency
-        $journalTriggers[$index] = 'currency_is';
-        $values[$index]          = sprintf('%s (%s)', $journal->transactionCurrency->name, $journal->transactionCurrency->code);
-        $index++;
+        //$journalTriggers[$index] = 'currency_is';
+        //$values[$index]          = sprintf('%s (%s)', $journal->transactionCurrency->name, $journal->transactionCurrency->code);
+        //$index++;
 
         // amount_exactly:
-        $journalTriggers[$index] = 'amount_exactly';
-        $values[$index]          = $destination->amount;
-        $index++;
+        //$journalTriggers[$index] = 'amount_exactly';
+        //$values[$index]          = $destination->amount;
+        //$index++;
 
         // description_is:
-        $journalTriggers[$index] = 'description_is';
+        //$journalTriggers[$index] = 'description_is';
+        $journalTriggers[$index] = 'description_contains';
         $values[$index]          = $journal->description;
         $index++;
 
@@ -227,34 +228,41 @@ trait ModelInformation
         $index++;
 
         // category (if)
+        /*
         $category = $journal->categories()->first();
         if (null !== $category) {
             $journalTriggers[$index] = 'category_is';
             $values[$index]          = $category->name;
             $index++;
         }
+        */
         // budget (if)
+        /*
         $budget = $journal->budgets()->first();
         if (null !== $budget) {
             $journalTriggers[$index] = 'budget_is';
             $values[$index]          = $budget->name;
             $index++;
         }
+        */
         // tags (if)
-        $tags = $journal->tags()->get();
+        //$tags = $journal->tags()->get();
         /** @var Tag $tag */
+        /*
         foreach ($tags as $tag) {
             $journalTriggers[$index] = 'tag_is';
             $values[$index]          = $tag->tag;
             $index++;
         }
+        */
         // notes (if)
+        /*
         $notes = $journal->notes()->first();
         if (null !== $notes) {
             $journalTriggers[$index] = 'notes_are';
             $values[$index]          = $notes->text;
         }
-
+        */
         foreach ($journalTriggers as $index => $trigger) {
             try {
                 $string = view(
@@ -271,6 +279,122 @@ trait ModelInformation
             } catch (Throwable $e) {
 
                 Log::debug(sprintf('Throwable was thrown in getTriggersForJournal(): %s', $e->getMessage()));
+                Log::debug($e->getTraceAsString());
+                $string = '';
+                // @codeCoverageIgnoreEnd
+            }
+            if ('' !== $string) {
+                $result[] = $string;
+            }
+        }
+
+        return $result;
+    }
+    /**
+     * @param TransactionJournal $journal
+     *
+     * @return array
+     */
+    private function createActionsFromJournal(TransactionJournal $journal): array
+    {
+        // TODO duplicated code.
+        $operators = config('firefly.search.operators');
+        $triggers  = [];
+        foreach ($operators as $key => $operator) {
+            if ('user_action' !== $key && false === $operator['alias']) {
+
+                $triggers[$key] = (string) trans(sprintf('firefly.rule_trigger_%s_choice', $key));
+            }
+        }
+        asort($triggers);
+
+        $result          = [];
+        $journalTriggers = [];
+        $values          = [];
+        $index           = 0;
+        // amount, description, category, budget, tags, source, destination, notes, currency type
+        //,type
+        /** @var Transaction $source */
+        $source = $journal->transactions()->where('amount', '<', 0)->first();
+        /** @var Transaction $destination */
+        $destination = $journal->transactions()->where('amount', '>', 0)->first();
+        if (null === $destination || null === $source) {
+            return $result;
+        }
+        // type
+        //$journalTriggers[$index] = 'transaction_type';
+        //$values[$index]          = $journal->transactionType->type;
+        //$index++;
+
+        // currency
+        //$journalTriggers[$index] = 'currency_is';
+        //$values[$index]          = sprintf('%s (%s)', $journal->transactionCurrency->name, $journal->transactionCurrency->code);
+        //$index++;
+
+        // amount_exactly:
+        //$journalTriggers[$index] = 'amount_exactly';
+        //$values[$index]          = $destination->amount;
+        //$index++;
+
+        // description_is:
+        $journalTriggers[$index] = 'set_description';
+        $values[$index]          = $journal->description;
+        $index++;
+
+        // from_account_is
+        $journalTriggers[$index] = 'set_source_account';
+        $values[$index]          = $source->account->name;
+        $index++;
+
+        // to_account_is
+        $journalTriggers[$index] = 'set_destination_account';
+        $values[$index]          = $destination->account->name;
+        $index++;
+
+        // category (if)
+        $category = $journal->categories()->first();
+        if (null !== $category) {
+            $journalTriggers[$index] = 'set_category';
+            $values[$index]          = $category->name;
+            $index++;
+        }
+        // budget (if)
+        $budget = $journal->budgets()->first();
+        if (null !== $budget) {
+            $journalTriggers[$index] = 'set_budget';
+            $values[$index]          = $budget->name;
+            $index++;
+        }
+        // tags (if)
+        $tags = $journal->tags()->get();
+        /** @var Tag $tag */
+        foreach ($tags as $tag) {
+            $journalTriggers[$index] = 'add_tag';
+            $values[$index]          = $tag->tag;
+            $index++;
+        }
+        // notes (if)
+        $notes = $journal->notes()->first();
+        if (null !== $notes) {
+            $journalTriggers[$index] = 'set_notes';
+            $values[$index]          = $notes->text;
+        }
+
+        foreach ($journalTriggers as $index => $trigger) {
+            try {
+                $string = view(
+                    'rules.partials.action',
+                    [
+                        'oldAction'  => $trigger,
+                        'oldValue'   => $values[$index],
+                        'oldChecked' => false,
+                        'count'      => $index + 1,
+                    ]
+                )->render();
+                // @codeCoverageIgnoreStart
+            } catch (Throwable $e) {
+
+                Log::debug(sprintf('Throwable was thrown in createActionsFromJournal(): %s', $e->getMessage()));
                 Log::debug($e->getTraceAsString());
                 $string = '';
                 // @codeCoverageIgnoreEnd
