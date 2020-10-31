@@ -23,7 +23,7 @@
 $(function () {
     "use strict";
 
-    columnChartCustomColours(everything, 'category-everything');
-    columnChartCustomColours(specific, 'specific-period');
+    columnChart(everything, 'category-everything');
+    columnChart(specific, 'specific-period');
 
 });

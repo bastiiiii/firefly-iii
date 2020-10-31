@@ -32,7 +32,7 @@ function drawChart() {
     lineChart(accountFrontpageUri, 'accounts-chart');
 
     lineChart(reportNetworthUri, 'networth-report-chart');
-    columnChartincomeVsExpenses(reportOperationsUri, 'operations-report-chart');
+    columnChart(reportOperationsUri, 'operations-report-chart');
 
     lineChart(accountDefaultsUri, 'defaults-accounts-chart');
     lineChart(accountSavingsUri, 'savings-accounts-chart');
@@ -41,14 +41,10 @@ function drawChart() {
     if (billCount > 0) {
         multiCurrencyPieChart('chart/bill/frontpage', 'bills-chart');
     }
-    stackedColumnChartCustom('chart/budget/frontpage', 'budgets-chart', [
-        [53, 124, 165], // blue
-        [0, 141, 76], // green
-        [219, 68, 55] // red #DB4437
-    ]);
-    columnChartCustom('chart/category/frontpage', 'categories-chart', [[219, 68, 55]]);
-    columnChartCustom(accountExpenseUri, 'expense-accounts-chart', [[219, 68, 55]]);
-    columnChartCustom(accountRevenueUri, 'revenue-accounts-chart', [[0, 141, 76]]);
+    stackedColumnChart('chart/budget/frontpage', 'budgets-chart');
+    columnChart('chart/category/frontpage', 'categories-chart');
+    columnChart(accountExpenseUri, 'expense-accounts-chart');
+    columnChart(accountRevenueUri, 'revenue-accounts-chart');
 
     // get balance box:
     getBalanceBox();

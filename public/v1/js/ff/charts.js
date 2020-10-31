@@ -75,31 +75,6 @@ function colorizeData(data) {
 }
 
 /**
- *
- * @param data
- * @returns {{}}
- */
-function colorizeDataCustom(data, colourSet) {
-    var fillColors = [];
-
-    for (var i = 0; i < colourSet.length; i++) {
-        fillColors.push("rgba(" + colourSet[i][0] + ", " + colourSet[i][1] + ", " + colourSet[i][2] + ", 0.5)");
-    }
-
-    var newData = {};
-    newData.datasets = [];
-
-    for (var loop = 0; loop < data.count; loop++) {
-        newData.labels = data.labels;
-        var dataset = data.datasets[loop];
-        dataset.fill = false;
-        dataset.backgroundColor = dataset.borderColor = fillColors[loop];
-        newData.datasets.push(dataset);
-    }
-    return newData;
-}
-
-/**
  * Function to draw a line chart:
  * @param URI
  * @param container
@@ -293,72 +268,6 @@ function columnChart(URI, container) {
     drawAChart(URI, container, chartType, options, colorData);
 }
 
-
-/**
- *
- * @param URI
- * @param container
- */
-function columnChartincomeVsExpenses(URI, container) {
-    "use strict";
-    var colourSet = [
-        [0, 141, 76], // green
-        [219, 68, 55] // red #DB4437
-    ];
-    var options = $.extend(true, {}, defaultChartOptions);
-    var chartType = 'bar';
-
-    drawAChartCustom(URI, container, chartType, options, colourSet);
-}
-
-
-/**
- *
- * @param URI
- * @param container
- */
-function columnChartCustom(URI, container, colourSet) {
-    "use strict";
-    var options = $.extend(true, {}, defaultChartOptions);
-    var chartType = 'bar';
-
-    drawAChartCustom(URI, container, chartType, options, colourSet);
-}
-
-/**
- *
- * @param URI
- * @param container
- */
-function columnChartCustomColours(URI, container) {
-    "use strict";
-    var colorData = false;
-    var options = $.extend(true, {}, defaultChartOptions);
-    var chartType = 'bar';
-
-    drawAChart(URI, container, chartType, options, colorData);
-
-}
-
-/**
- *
- * @param URI
- * @param container
- */
-function stackedColumnChartCustom(URI, container, colourSet) {
-    "use strict";
-
-    var options = $.extend(true, {}, defaultChartOptions);
-
-    options.stacked = true;
-    options.scales.xAxes[0].stacked = true;
-    options.scales.yAxes[0].stacked = true;
-
-    var chartType = 'bar';
-
-    drawAChartCustom(URI, container, chartType, options, colourSet);
-}
-
 /**
  *
  * @param URI
@@ -471,132 +380,21 @@ function drawAChart(URI, container, chartType, options, colorData) {
             case 'bar':
                 if (data.datasets.length > 0) {
                     var options2 = $.extend(options, { legend: { display:true, },});
-                    options = options2;
-                }
-            break;
-            case 'pie':
-                if (data.labels.length > 1 && data.labels.length < 5) {
-                    var options2 = $.extend(options, { legend: { display:true, position: 'right' },});
-                    options = options2;
-                }
-            default:
+                    options = options2;                                    
 
-        }
-        if (data.datasets.length > 1) {
-            var options2 = $.extend(options, { legend: { display:true, },});
-            options = options2;
-        }
-        
-        if (allCharts.hasOwnProperty(container)) {
-            allCharts[container].data.datasets = data.datasets;
-            allCharts[container].data.labels = data.labels;
-            allCharts[container].update();
-        } else {
-            // new chart!
-            var ctx = document.getElementById(container).getContext("2d");
-            var chartOpts = {
-                type: chartType,
-                data: data,
-                options: options,
-                lineAtIndex: [],
-                annotation: {},
-            };
-            if (typeof drawVerticalLine !== 'undefined') {
-                if (drawVerticalLine !== '') {
-                    // draw line using annotation plugin.
-                    chartOpts.options.annotation = {
-                        annotations: [{
-                            type: 'line',
-                            id: 'a-line-1',
-                            mode: 'vertical',
-                            scaleID: 'x-axis-0',
-                            value: drawVerticalLine,
-                            borderColor: 'red',
-                            borderWidth: 1,
-                            label: {
-                                backgroundColor: 'rgba(0,0,0,0)',
-                                fontFamily: "sans-serif",
-                                fontSize: 12,
-                                fontColor: "#333",
-                                position: "right",
-                                xAdjust: -20,
-                                yAdjust: -125,
-                                enabled: true,
-                                content: todayText
-                            }
-                        }]
-                    };
-                }
-            }
-            allCharts[container] = new Chart(ctx, chartOpts);
-        }
-
-    }).fail(function () {
-        $('#' + container).addClass('general-chart-error');
-    });
-}
-
-/**
- * @param URI
- * @param container
- * @param chartType
- * @param options
- * @param colourSet
- * @param today
- */
-function drawAChartCustom(URI, container, chartType, options, colourSet) {
-    var containerObj = $('#' + container);
-    if (containerObj.length === 0) {
-        return;
-    }
-
-    $.getJSON(URI).done(function (data) {
-        containerObj.removeClass('general-chart-error');
-
-        // if result is empty array, or the labels array is empty, show error.
-        // console.log(URI);
-        // console.log(data.length);
-        // console.log(typeof data.labels);
-        // console.log(data.labels.length);
-        if (
-            // is undefined
-            typeof data === 'undefined' ||
-            // is empty
-            0 === data.length ||
-            // isn't empty but contains no labels
-            (typeof data === 'object' && typeof data.labels === 'object' && 0 === data.labels.length)
-        ) {
-            // remove the chart container + parent
-            var holder = $('#' + container).parent().parent();
-            if (holder.hasClass('box') || holder.hasClass('box-body')) {
-                // find box-body:
-                var boxBody;
-                if (!holder.hasClass('box-body')) {
-                    boxBody = holder.find('.box-body');
-                } else {
-                    boxBody = holder;
-                }
-                boxBody.empty().append($('<p>').append($('<em>').text(noDataForChart)));
-            }
-            return;
-        }
-
-        if (colourSet) {
-            data = colorizeDataCustom(data, colourSet);
-        }
-
-        // manipulate specific charttypes (e.g. add legend)
-        switch(chartType) {
-            case 'line':
-                if (data.datasets.length > 1) {
-                    var options2 = $.extend(options, { legend: { display:true, },});
-                    options = options2;
-                }
-            break;
-            case 'bar':
-                if (data.datasets.length > 0) {
-                    var options2 = $.extend(options, { legend: { display:true, },});
-                    options = options2;
+                    for (var loop = 0; loop < data.datasets.length; loop++) {
+                        data.datasets[loop].fill = false;
+                        //green =   [0, 141, 76],
+                        //red =     [219, 68, 55],
+                        //blue =    [53, 124, 165],
+                        //orange = [219, 139, 11],
+                        if (data.datasets[loop].label.match(/Einnahmen/) != null) {
+                            data.datasets[loop].backgroundColor = data.datasets[loop].borderColor = 'rgba(0, 141, 76, 0.5)';
+                        }
+                        if (data.datasets[loop].label.match(/(Ausgabe|[Aa]usgegeben)(?!.*Budget)/) != null) {
+                            data.datasets[loop].backgroundColor = data.datasets[loop].borderColor = 'rgba(219, 68, 55, 0.5)';
+                        }
+                    }
                 }
             break;
             case 'pie':
