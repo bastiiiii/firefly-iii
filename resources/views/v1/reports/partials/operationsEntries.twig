@@ -1,32 +1,41 @@
 <table class="table table-hover">
     <tbody>
-
+{#
     <tr>
         <th>{{'period'|_}}</th>
         {% for entry in list.periods %}
-            <td width="{{ 100/list.periods|length }}%">{{ entry }}</td>
+            <td style="text-align: center; vertical-align: middle;"  width="{{ 100/list.periods|length }}%">{{ entry }}</td>
         {% endfor %}
     </tr>
-
+#}
     <tr>  
-        <th data-defaultsign="_19">{{ 'earned'|_ }}</th>
+        <th data-defaultsign="_19" style="text-align: left; vertical-align: middle;" width="80px">{#{ 'earned'|_ }#}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
         {% for entry in list.earned %}
-            <td width="{{ 100/list.periods|length }}%">{{ formatAmountBySymbol(entry, list.currency_symbol, list.currency_decimal_places) }}</td>
+            <td style="text-align: center; vertical-align: middle;" width="{{ 100/list.periods|length }}%">
+                {{ formatAmountBySymbol(entry, list.currency_symbol, list.currency_decimal_places) }}
+            </td>
         {% endfor %}
+        <td width="10px"></td>
     </tr>
 
     <tr>
-        <th data-defaultsign="_19">{{ 'spent'|_ }}</th>
+        <th data-defaultsign="_19" style="text-align: left; vertical-align: middle;">{#{ 'spent'|_ }#}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
         {% for entry in list.spent %}
-            <td width="{{ 100/list.periods|length }}%">{{ formatAmountBySymbol(entry, list.currency_symbol, list.currency_decimal_places) }}</td>
+            <td style="text-align: center; vertical-align: middle;">
+                {{ formatAmountBySymbol(entry, list.currency_symbol, list.currency_decimal_places) }}
+            </td>
         {% endfor %}
+        <td></td>
     </tr>
 
     <tr>
-        <th data-defaultsign="_19">{{ 'difference'|_ }}</th>
+        <th data-defaultsign="_19" style="text-align: left; vertical-align: middle;">{#{ 'difference'|_ }#}&nbsp;&nbsp;&nbsp;&nbsp;&#916;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
         {% for entry in list.difference %}
-            <td width="{{ 100/list.periods|length }}%">{{ formatAmountBySymbol(entry, list.currency_symbol, list.currency_decimal_places) }}</td>
+            <td style="text-align: center; vertical-align: middle;">
+                {{ formatAmountBySymbol(entry, list.currency_symbol, list.currency_decimal_places) }}
+            </td>
         {% endfor %}
+        <td></td>
     </tr>
 
     </tbody>
