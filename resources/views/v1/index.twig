@@ -21,6 +21,9 @@
                 <div class="box-body">
                     <canvas id="operations-report-chart" style="width:100%;height:400px;" height="400" width="100%"></canvas>
                 </div>
+                {# account balances and income vs. expense #}
+                <div class="box-body table-responsive no-padding" id="incomeVsExpenseReport">
+                </div>
                 <div class="box-header with-border">
                     <h3 class="box-title">{{ 'net_worth'|_ }}</a></h3>
                 </div>
@@ -127,6 +130,7 @@
         var accountCreditcardsUri = '{{ route('chart.account.creditcards') }}';
         var reportNetworthUri = '{{ route('chart.report.netWorthUserAccounts') }}';
         var reportOperationsUri = '{{ route('chart.report.operationsUserAccounts') }}';
+        var reportDataOperationsUri = '{{ route('report-data.operations.operationsEntries') }}';
         var piggyInfoUri = '{{ route('json.fp.piggy-banks') }}';
         var drawVerticalLine = '';
         {# render vertical line with text "today"  #}
@@ -140,6 +144,7 @@
     <script type="text/javascript" src="v1/js/ff/charts.defaults.js?v={{ FF_VERSION }}" nonce="{{ JS_NONCE }}"></script>
     <script type="text/javascript" src="v1/js/ff/charts.js?v={{ FF_VERSION }}" nonce="{{ JS_NONCE }}"></script>
     <script type="text/javascript" src="v1/js/ff/index.js?v={{ FF_VERSION }}" nonce="{{ JS_NONCE }}"></script>
+    <script type="text/javascript" src="v1/js/ff/reports/all.js?v={{ FF_VERSION }}" nonce="{{ JS_NONCE }}"></script>
 {% endblock %}
 {% block styles %}
 {% endblock %}

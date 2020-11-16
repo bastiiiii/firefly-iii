@@ -804,6 +804,7 @@ Route::group(
      'as'         => 'report-data.operations.',],
     static function () {
         Route::get('operations/{accountList}/{start_date}/{end_date}', ['uses' => 'OperationsController@operations', 'as' => 'operations']);
+        Route::get('operationsEntries', ['uses' => 'OperationsController@operationsEntries', 'as' => 'operationsEntries']);
         Route::get('income/{accountList}/{start_date}/{end_date}', ['uses' => 'OperationsController@income', 'as' => 'income']);
         Route::get('expenses/{accountList}/{start_date}/{end_date}', ['uses' => 'OperationsController@expenses', 'as' => 'expenses']);
     }

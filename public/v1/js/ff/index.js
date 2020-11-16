@@ -33,6 +33,7 @@ function drawChart() {
 
     lineChart(reportNetworthUri, 'networth-report-chart');
     columnChart(reportOperationsUri, 'operations-report-chart');
+    loadAjaxPartial('incomeVsExpenseReport', reportDataOperationsUri);
 
     lineChart(accountDefaultsUri, 'defaults-accounts-chart');
     lineChart(accountSavingsUri, 'savings-accounts-chart');

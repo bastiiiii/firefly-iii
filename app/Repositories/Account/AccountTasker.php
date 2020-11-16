@@ -190,6 +190,102 @@ class AccountTasker implements AccountTaskerInterface
         return $report;
     }
 
+/**
+     * Shows income and expense, debit/credit: operations.
+     *
+     * @param Collection $accounts
+     * @param Carbon     $start
+     * @param Carbon     $end
+     *
+     * @return JsonResponse
+     */
+    public function getOperationsBla(Carbon $start, Carbon $end, Collection $accounts): array
+    {
+        // get journals for entire period:
+        $data      = [];
+        $result    = [];
+
+        /** @var GroupCollectorInterface $collector */
+        $collector = app(GroupCollectorInterface::class);
+        $collector->setRange($start, $end)->withAccountInformation();
+        $collector->setXorAccounts($accounts);
+        $collector->setTypes([TransactionType::WITHDRAWAL, TransactionType::DEPOSIT, TransactionType::RECONCILIATION, TransactionType::TRANSFER]);
+        $journals = $collector->getExtractedJournals();
+
+        $format         = app('navigation')->preferredCarbonFormat($start, $end);
+        // loop. group by currency and by period.
+        /** @var array $journal */
+        foreach ($journals as $journal) {
+            $period                     = $journal['date']->format($format);
+            $currencyId                 = (int) $journal['currency_id'];
+            $data[$currencyId]          = $data[$currencyId] ?? [
+                    'currency_id'             => $currencyId,
+                    'currency_symbol'         => $journal['currency_symbol'],
+                    'currency_code'           => $journal['currency_code'],
+                    'currency_name'           => $journal['currency_name'],
+                    'currency_decimal_places' => (int) $journal['currency_decimal_places'],
+                ];
+            $data[$currencyId][$period] = $data[$currencyId][$period] ?? [
+                    'period' => $period,
+                    'earned' => '0',
+                    'spent'  => '0',
+                    'difference' => '0',
+                    'countearned' => 0,
+                    'countspent' => 0,
+                ];
+
+            $result['currency_symbol'] = $result['currency_symbol'] ?? 
+                $result['currency_symbol'] = $journal['currency_symbol'];
+            $result['currency_decimal_places'] = $result['currency_decimal_places'] ?? 
+                $result['currency_decimal_places'] = $journal['currency_decimal_places'];
+
+            // in our outgoing?
+            $key    = 'spent';
+            $amount = app('steam')->negative($journal['amount']);
+
+            if (
+                TransactionType::DEPOSIT === $journal['transaction_type_type']
+                || // deposit = incoming
+                // transfer or opening balance, and these accounts are the destination.
+                (
+                    (
+                        TransactionType::TRANSFER === $journal['transaction_type_type']
+                        || TransactionType::OPENING_BALANCE === $journal['transaction_type_type']
+                    )
+                    && in_array($journal['destination_account_id'], $ids, true)
+                )
+            ) {
+                $key = 'earned';
+                $amount = app('steam')->positive($journal['amount']);
+            }
+
+            $data[$currencyId][$period][$key] = bcadd($data[$currencyId][$period][$key], $amount);
+            $data[$currencyId][$period]['count'.$key] = $data[$currencyId][$period]['count'.$key]+ 1;
+
+            $data[$currencyId]['period'][$period] = $period;
+        }
+
+        foreach ($data[$currencyId]['period'] as $period) {
+            $data[$currencyId]['earned'][$period]  = $data[$currencyId][$period]['earned'];
+            $data[$currencyId]['spent'][$period]  = $data[$currencyId][$period]['spent'];
+            $data[$currencyId]['difference'][$period]  = bcadd($data[$currencyId][$period]['earned'], $data[$currencyId][$period]['spent']);
+        }
+
+        $result['periods'] = $data[$currencyId]['period'];
+        $result['earned'] = $data[$currencyId]['earned'];
+        $result['spent'] = $data[$currencyId]['spent'];
+        $result['difference'] = $data[$currencyId]['difference'];
+
+        ksort($result['periods']);
+        ksort($result['earned']);
+        ksort($result['spent']);
+        ksort($result['difference']);
+
+        $cache->store($data);
+
+        return $result;
+    }
+
     /**
      * @param User $user
      */

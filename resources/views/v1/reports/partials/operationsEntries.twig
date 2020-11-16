@@ -1,0 +1,33 @@
+<table class="table table-hover">
+    <tbody>
+
+    <tr>
+        <th>{{'period'|_}}</th>
+        {% for entry in list.periods %}
+            <td width="{{ 100/list.periods|length }}%">{{ entry }}</td>
+        {% endfor %}
+    </tr>
+
+    <tr>  
+        <th data-defaultsign="_19">{{ 'earned'|_ }}</th>
+        {% for entry in list.earned %}
+            <td width="{{ 100/list.periods|length }}%">{{ formatAmountBySymbol(entry, list.currency_symbol, list.currency_decimal_places) }}</td>
+        {% endfor %}
+    </tr>
+
+    <tr>
+        <th data-defaultsign="_19">{{ 'spent'|_ }}</th>
+        {% for entry in list.spent %}
+            <td width="{{ 100/list.periods|length }}%">{{ formatAmountBySymbol(entry, list.currency_symbol, list.currency_decimal_places) }}</td>
+        {% endfor %}
+    </tr>
+
+    <tr>
+        <th data-defaultsign="_19">{{ 'difference'|_ }}</th>
+        {% for entry in list.difference %}
+            <td width="{{ 100/list.periods|length }}%">{{ formatAmountBySymbol(entry, list.currency_symbol, list.currency_decimal_places) }}</td>
+        {% endfor %}
+    </tr>
+
+    </tbody>
+</table>

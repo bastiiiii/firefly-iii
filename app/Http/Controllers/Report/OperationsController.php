@@ -27,6 +27,8 @@ use FireflyIII\Http\Controllers\Controller;
 use FireflyIII\Repositories\Account\AccountTaskerInterface;
 use FireflyIII\Support\CacheProperties;
 use Illuminate\Support\Collection;
+use FireflyIII\Models\AccountType;
+use FireflyIII\Repositories\Account\AccountRepositoryInterface;
 use Log;
 use Throwable;
 
@@ -175,6 +177,42 @@ class OperationsController extends Controller
             $result = view('reports.partials.operations', compact('sums'))->render();
         } catch (Throwable $e) {
             Log::debug(sprintf('Could not render reports.partials.operations: %s', $e->getMessage()));
+            $result = 'Could not render view.';
+        }
+        $cache->store($result);
+
+        return $result;
+    }
+
+    /**
+     * Overview of income and expense.
+     *
+     * @return mixed|string
+     */
+    public function operationsEntries()
+    {
+        $start      = clone session('start', Carbon::now()->startOfMonth());
+        $end        = clone session('end', Carbon::now()->endOfMonth());
+
+        $accountRepository = app(AccountRepositoryInterface::class);
+        $accounts = $accountRepository->getAccountsByType([AccountType::DEFAULT, AccountType::ASSET]);
+        // chart properties for cache:
+        $cache = new CacheProperties;
+        $cache->addProperty($start);
+        $cache->addProperty($end);
+        $cache->addProperty('inc-exp-report2');
+        $cache->addProperty($accounts->pluck('id')->toArray());
+        if ($cache->has()) {
+            //return $cache->get(); // @codeCoverageIgnore
+        }
+        $format         = app('navigation')->preferredCarbonFormat($start, $end);
+        
+        $list  = $this->tasker->getOperationsBla($start, $end, $accounts);
+
+        try {
+            $result = view('reports.partials.operationsEntries', compact('list'))->render();
+        } catch (Throwable $e) {
+            Log::debug(sprintf('Could not render reports.partials.operationsEntries: %s', $e->getMessage()));
             $result = 'Could not render view.';
         }
         $cache->store($result);
