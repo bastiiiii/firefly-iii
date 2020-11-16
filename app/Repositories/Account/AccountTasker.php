@@ -203,7 +203,6 @@ class AccountTasker implements AccountTaskerInterface
     {
         // get journals for entire period:
         $data      = [];
-        $result    = [];
 
         /** @var GroupCollectorInterface $collector */
         $collector = app(GroupCollectorInterface::class);
@@ -234,10 +233,6 @@ class AccountTasker implements AccountTaskerInterface
                     'countspent' => 0,
                 ];
 
-            $result['currency_symbol'] = $result['currency_symbol'] ?? 
-                $result['currency_symbol'] = $journal['currency_symbol'];
-            $result['currency_decimal_places'] = $result['currency_decimal_places'] ?? 
-                $result['currency_decimal_places'] = $journal['currency_decimal_places'];
 
             // in our outgoing?
             $key    = 'spent';
@@ -265,23 +260,28 @@ class AccountTasker implements AccountTaskerInterface
             $data[$currencyId]['period'][$period] = $period;
         }
 
-        foreach ($data[$currencyId]['period'] as $period) {
-            $data[$currencyId]['earned'][$period]  = $data[$currencyId][$period]['earned'];
-            $data[$currencyId]['spent'][$period]  = $data[$currencyId][$period]['spent'];
-            $data[$currencyId]['difference'][$period]  = bcadd($data[$currencyId][$period]['earned'], $data[$currencyId][$period]['spent']);
+        $datanew = [];
+        $datanew['currency_symbol'] = $journal['currency_symbol'];
+        $datanew['currency_decimal_places'] = $journal['currency_decimal_places'];
+        // loop all possible periods between $start and $end
+        $format         = app('navigation')->preferredCarbonFormat($start, $end);
+        $titleFormat    = app('navigation')->preferredCarbonLocalizedFormat($start, $end);
+        $preferredRange = app('navigation')->preferredRangeFormat($start, $end);
+        $currentStart = clone $start;
+        while ($currentStart <= $end) {
+            $period                        = $currentStart->format($format);
+            $title                      = $currentStart->formatLocalized($titleFormat);
+
+            $datanew['periods'][$period] = $title;
+            $datanew['earned'][$period] = $data[$currencyId][$period]['earned'] ?? "0";
+            $datanew['spent'][$period] = $data[$currencyId][$period]['spent'] ?? "0";
+            $datanew['difference'][$period] = bcadd($datanew['earned'][$period], $datanew['spent'][$period]);
+
+            $currentStart               = app('navigation')->addPeriod($currentStart, $preferredRange, 0);
         }
 
-        $result['periods'] = $data[$currencyId]['period'];
-        $result['earned'] = $data[$currencyId]['earned'];
-        $result['spent'] = $data[$currencyId]['spent'];
-        $result['difference'] = $data[$currencyId]['difference'];
+        return $datanew;
 
-        ksort($result['periods']);
-        ksort($result['earned']);
-        ksort($result['spent']);
-        ksort($result['difference']);
-
-        return $result;
     }
 
     /**
