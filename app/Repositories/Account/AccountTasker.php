@@ -281,8 +281,6 @@ class AccountTasker implements AccountTaskerInterface
         ksort($result['spent']);
         ksort($result['difference']);
 
-        $cache->store($data);
-
         return $result;
     }
 

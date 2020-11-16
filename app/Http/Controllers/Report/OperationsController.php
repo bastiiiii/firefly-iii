@@ -203,7 +203,7 @@ class OperationsController extends Controller
         $cache->addProperty('inc-exp-report2');
         $cache->addProperty($accounts->pluck('id')->toArray());
         if ($cache->has()) {
-            //return $cache->get(); // @codeCoverageIgnore
+            return $cache->get(); // @codeCoverageIgnore
         }
         $format         = app('navigation')->preferredCarbonFormat($start, $end);
         
