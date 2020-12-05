@@ -50,18 +50,22 @@
                                     <td>
                                         {% if journal.reconciled == false %}
                                             <div class="input-group input-group-sm">
+                                                {# 
                                                 <span class="input-group-addon">{{ journal.currency_symbol }}</span>
+                                                #}
                                                 <input name="amount[{{ journal.transaction_journal_id }}]" class="form-control" autocomplete="off"
-                                                       step="any" type="number" value="{{ journal.amount }}">
+                                                       {# step="any" type="number" #} value="{{ journal.amount }}">
                                                 <input type="hidden" name="transaction_currency_id[{{ journal.transaction_journal_id }}]"
                                                        value="{{ journal.currency_id }}">
                                             </div>
                                             {% if journal.foreign_amount %}
                                                 {# insert foreign data #}
                                                 <div class="input-group input-group-sm">
+                                                    {#
                                                     <span class="input-group-addon">{{ journal.foreign_currency_symbol }}</span>
+                                                    #}
                                                     <input name="foreign_amount[{{ journal.transaction_journal_id }}]" class="form-control" autocomplete="off"
-                                                           step="any" type="number" value="{{ journal.foreign_amount }}">
+                                                           {# step="any" type="number" #} value="{{ journal.foreign_amount }}">
                                                     <input type="hidden" name="foreign_currency_id[{{ journal.transaction_journal_id }}]"
                                                            value="{{ journal.foreign_currency_id }}">
                                                 </div>
