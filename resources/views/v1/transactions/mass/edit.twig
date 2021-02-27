@@ -168,6 +168,12 @@
                                     #}
                                     {# tags #}
                                     <td>
+                                    <input class="form-control" placeholder="" name="tags" autocomplete="off" type="text" value="">
+                                        {% for tag in journal.tags %}
+                                            <h4 style="display: inline;"><a class="label label-success" href="{{ route('tags.show', tag.id) }}">
+                                                    <i class="fa fa-fw fa-tag"></i>{{ tag.tag }}</a>
+                                            </h4>
+                                        {% endfor %}
                                         {% for tag in journal.tags %}
                                         <span style="display: inline;"><a class="label label-success">
                                                 <i class="fa fa-fw fa-tag"></i>
@@ -195,4 +201,10 @@
     <script type="text/javascript" src="v1/js/lib/typeahead/typeahead.bundle.min.js?v={{ FF_VERSION }}" nonce="{{ JS_NONCE }}"></script>
     <script type="text/javascript" src="v1/js/ff/common/autocomplete.js?v={{ FF_VERSION }}" nonce="{{ JS_NONCE }}"></script>
     <script type="text/javascript" src="v1/js/ff/transactions/mass/edit.js?v={{ FF_VERSION }}" nonce="{{ JS_NONCE }}"></script>
+    <script type="text/javascript" src="v1/js/lib/bootstrap-tagsinput.min.js?v={{ FF_VERSION }}" nonce="{{ JS_NONCE }}"></script>
+    <script type="text/javascript" src="v1/js/ff/transactions/mass/edit-bulk.js?v={{ FF_VERSION }}" nonce="{{ JS_NONCE }}"></script>
+{% endblock %}
+
+{% block styles %}
+    <link href="v1/css/bootstrap-tagsinput.css?v={{ FF_VERSION }}" type="text/css" rel="stylesheet" media="all">
 {% endblock %}
