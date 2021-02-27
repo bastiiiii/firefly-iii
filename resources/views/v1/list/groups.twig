@@ -11,7 +11,7 @@
         {% if showTags %}
             {% set colspancount = colspancount + 1 %}
         {% endif %}
-        <td colspan="{{ colspancount }}" class="no-margin-pagination">{{ groups.render()|raw }}</td>
+        <td colspan="{{ colspancount }}" class="no-margin-pagination">{{ groups.links('pagination.bootstrap-4')|raw }}</td>
         <td colspan="1" class="hidden-xs">
             <!-- Single button -->
             <div class="btn-group btn-group-xs action-menu pull-right" style="display: none;">
@@ -299,15 +299,15 @@
     <tr>
         {% if showCategory or showBudget %}
             {% if showTags %}
-                <td colspan="10" class="no-margin-pagination">{{ groups.render()|raw }}</td>
+                <td colspan="10" class="no-margin-pagination">{{ groups.links('pagination.bootstrap-4')|raw }}</td>
             {% else %}
-                <td colspan="9" class="no-margin-pagination">{{ groups.render()|raw }}</td>
+                <td colspan="9" class="no-margin-pagination">{{ groups.links('pagination.bootstrap-4')|raw }}</td>
             {% endif %}
         {% else %}
             {% if showTags %}
-                <td colspan="9" class="no-margin-pagination">{{ groups.render()|raw }}</td>
+                <td colspan="9" class="no-margin-pagination">{{ groups.links('pagination.bootstrap-4')|raw }}</td>
             {% else %}
-                <td colspan="8" class="no-margin-pagination">{{ groups.render()|raw }}</td>
+                <td colspan="8" class="no-margin-pagination">{{ groups.links('pagination.bootstrap-4')|raw }}</td>
             {% endif %}
         {% endif %}
     </tr>

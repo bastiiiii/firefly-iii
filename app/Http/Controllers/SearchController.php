@@ -70,7 +70,6 @@ class SearchController extends Controller
         $ruleId           = (int) $request->get('rule');
         $rule             = null;
         $ruleChanged      = false;
-        $longQueryWarning = false;
 
         // find rule, check if query is different, offer to update.
         $ruleRepository = app(RuleRepositoryInterface::class);
@@ -81,9 +80,6 @@ class SearchController extends Controller
                 $ruleChanged = true;
             }
         }
-        if (strlen($fullQuery) > 250) {
-            $longQueryWarning = true;
-        }
         // parse search terms:
         $searcher->parseQuery($fullQuery);
 
@@ -93,7 +89,7 @@ class SearchController extends Controller
 
         $subTitle = (string) trans('breadcrumbs.search_result', ['query' => $fullQuery]);
 
-        return view('search.index', compact('query', 'longQueryWarning', 'operators', 'page', 'rule', 'fullQuery', 'subTitle', 'ruleId', 'ruleChanged'));
+        return view('search.index', compact('query',  'operators', 'page', 'rule', 'fullQuery', 'subTitle', 'ruleId', 'ruleChanged'));
     }
 
     /**
