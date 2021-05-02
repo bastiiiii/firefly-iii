@@ -60,7 +60,6 @@ class OperationsController extends Controller
         );
     }
 
-
     /**
      * View of income and expense.
      *
@@ -79,18 +78,18 @@ class OperationsController extends Controller
         $cache->addProperty('expense-report');
         $cache->addProperty($accounts->pluck('id')->toArray());
         if ($cache->has()) {
-            return $cache->get(); // @codeCoverageIgnore
+            return $cache->get(); 
         }
         $report = $this->tasker->getExpenseReport($start, $end, $accounts);
         $type   = 'expense-entry';
         try {
-            $result = view('reports.partials.income-expenses', compact('report', 'type'))->render();
-            // @codeCoverageIgnoreStart
-        } catch (Throwable $e) {
+            $result = prefixView('reports.partials.income-expenses', compact('report', 'type'))->render();
+
+        } catch (Throwable $e) { // @phpstan-ignore-line
             Log::debug(sprintf('Could not render reports.partials.income-expense: %s', $e->getMessage()));
             $result = 'Could not render view.';
         }
-        // @codeCoverageIgnoreEnd
+
         $cache->store($result);
 
         return $result;
@@ -114,18 +113,18 @@ class OperationsController extends Controller
         $cache->addProperty('income-report');
         $cache->addProperty($accounts->pluck('id')->toArray());
         if ($cache->has()) {
-            return $cache->get(); // @codeCoverageIgnore
+            return $cache->get(); 
         }
         $report = $this->tasker->getIncomeReport($start, $end, $accounts);
         $type   = 'income-entry';
         try {
-            $result = view('reports.partials.income-expenses', compact('report', 'type'))->render();
-            // @codeCoverageIgnoreStart
-        } catch (Throwable $e) {
+            $result = prefixView('reports.partials.income-expenses', compact('report', 'type'))->render();
+
+        } catch (Throwable $e) { // @phpstan-ignore-line
             Log::debug(sprintf('Could not render reports.partials.income-expenses: %s', $e->getMessage()));
             $result = 'Could not render view.';
         }
-        // @codeCoverageIgnoreEnd
+
         $cache->store($result);
 
         return $result;
@@ -149,7 +148,7 @@ class OperationsController extends Controller
         $cache->addProperty('inc-exp-report');
         $cache->addProperty($accounts->pluck('id')->toArray());
         if ($cache->has()) {
-            return $cache->get(); // @codeCoverageIgnore
+            return $cache->get(); 
         }
 
         $incomes  = $this->tasker->getIncomeReport($start, $end, $accounts);
@@ -174,8 +173,8 @@ class OperationsController extends Controller
         }
 
         try {
-            $result = view('reports.partials.operations', compact('sums'))->render();
-        } catch (Throwable $e) {
+            $result = prefixView('reports.partials.operations', compact('sums'))->render();
+        } catch (Throwable $e) { // @phpstan-ignore-line
             Log::debug(sprintf('Could not render reports.partials.operations: %s', $e->getMessage()));
             $result = 'Could not render view.';
         }
