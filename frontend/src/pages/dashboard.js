@@ -48,22 +48,22 @@ import store from '../components/store';
 require('../bootstrap');
 require('chart.js');
 
-Vue.component('transaction-list-large', TransactionListLarge);
-Vue.component('transaction-list-medium', TransactionListMedium);
-Vue.component('transaction-list-small', TransactionListSmall);
+//Vue.component('transaction-list-large', TransactionListLarge);
+//Vue.component('transaction-list-medium', TransactionListMedium);
+//Vue.component('transaction-list-small', TransactionListSmall);
 
 // components as an example
 
 Vue.component('dashboard', Dashboard);
 Vue.component('top-boxes', TopBoxes);
 Vue.component('main-account', MainAccount);
-Vue.component('main-account-list', MainAccountList);
-Vue.component('main-bills-list', MainBillsList);
-Vue.component('main-budget-list', MainBudgetList);
+//Vue.component('main-account-list', MainAccountList);
+//Vue.component('main-bills-list', MainBillsList);
+//Vue.component('main-budget-list', MainBudgetList);
 Vue.component('main-category-list', MainCategoryList);
-Vue.component('main-debit-list', MainDebitList);
-Vue.component('main-credit-list', MainCreditList);
-Vue.component('main-piggy-list', MainPiggyList);
+//Vue.component('main-debit-list', MainDebitList);
+//Vue.component('main-credit-list', MainCreditList);
+//Vue.component('main-piggy-list', MainPiggyList);
 
 Vue.use(Vuex);
 

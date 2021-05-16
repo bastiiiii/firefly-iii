@@ -546,6 +546,8 @@ Route::group(
         Route::get('export', ['uses' => 'Export\IndexController@export', 'as' => 'export']);
     }
 );
+
+
 /**
  * Object group controller.
  */
@@ -611,6 +613,8 @@ Route::group(
             'budget/total-budgeted/{currency}/{start_date}/{end_date}',
             ['uses' => 'Json\BudgetController@getBudgetInformation', 'as' => 'budget.total-budgeted']
         );
+
+
         // boxes
         Route::get('box/balance', ['uses' => 'Json\BoxController@balance', 'as' => 'box.balance']);
         Route::get('box/available', ['uses' => 'Json\BoxController@available', 'as' => 'box.available']);
@@ -869,6 +873,8 @@ Route::group(
 Route::group(
     ['middleware' => 'user-full-auth', 'namespace' => 'FireflyIII\Http\Controllers\Report', 'prefix' => 'report-data/budget', 'as' => 'report-data.budget.'],
     static function () {
+
+
         Route::get('general/{accountList}/{start_date}/{end_date}/', ['uses' => 'BudgetController@general', 'as' => 'general']);
         // TODO is route still used?
         Route::get('period/{accountList}/{start_date}/{end_date}', ['uses' => 'BudgetController@period', 'as' => 'period']);
@@ -906,6 +912,11 @@ Route::group(
         Route::get('', ['uses' => 'Rule\IndexController@index', 'as' => 'index']);
 
         Route::post('move-rule/{rule}/{ruleGroup}', ['uses' => 'Rule\IndexController@moveRule', 'as' => 'move-rule']);
+
+
+        Route::post('trigger/order/{rule}', ['uses' => 'Rule\IndexController@reorderRuleTriggers', 'as' => 'reorder-triggers']);
+        Route::post('action/order/{rule}', ['uses' => 'Rule\IndexController@reorderRuleActions', 'as' => 'reorder-actions']);
+
         // select controller
         Route::get('test', ['uses' => 'Rule\SelectController@testTriggers', 'as' => 'test-triggers']);
         Route::get('test-rule/{rule}', ['uses' => 'Rule\SelectController@testTriggersByRule', 'as' => 'test-triggers-rule']);

@@ -26,19 +26,19 @@
 php /sites/FF3/dev/tools/cli.php ff3:json-translations v2
 
 # remove old stuff
-rm -rf public/
-rm -rf ../public/fonts
-rm -rf ../public/images
-rm -rf ../public/v2/js
-rm -rf ../public/v2/css
-mkdir -p public/js
-mkdir -p public/css
+# rm -rf public/
+# rm -rf ../public/fonts
+# rm -rf ../public/images
+# rm -rf ../public/v2/js
+# rm -rf ../public/v2/css
+# mkdir -p public/js
+# mkdir -p public/css
 
 # build new stuff
 yarn install
 yarn audit fix
 yarn upgrade
-yarn prod
+yarn --scripts-prepend-node-path prod
 
 # yarn watch
 
@@ -47,7 +47,7 @@ yarn prod
 # mv public/css ../public/v2
 
 # also copy fonts
-#cp -r fonts ../public/v2/css
+# cp -r fonts ../public/v2/css
 
 # remove built stuff
-rm -rf public/
+#rm -rf public/
